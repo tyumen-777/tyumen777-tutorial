@@ -15,7 +15,7 @@ const AuthorizationForm = () => {
 
     const handleChange = (e) => {
         if (e.target.type === 'text') {
-            email = e.target.value
+            email = e.target.value.trim()
         } else {
             password = e.target.value
         }
