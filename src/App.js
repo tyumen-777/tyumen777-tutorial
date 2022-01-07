@@ -49,7 +49,6 @@ function App() {
   ];
 
   const [phraseArr, setPhraseArr] = useState([]);
-  console.log(phraseArr);
 
   const randomPhrase = (adjective, noun) => {
     let randomAdjective = Math.floor(Math.random() * adjective.length);
@@ -70,7 +69,7 @@ function App() {
         {phraseArr.length === 0 ? (
           <EmptyBlock />
         ) : (
-          phraseArr.map((data) => <Phrase text={data} />)
+          phraseArr.map((data, index) => <Phrase text={data} key={index} />)
         )}
       </div>
       <button
