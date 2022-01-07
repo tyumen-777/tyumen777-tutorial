@@ -50,12 +50,13 @@ function App() {
 
   const [phraseArr, setPhraseArr] = useState([]);
 
-  const randomPhrase = (adjective, noun) => {
+  const randomPhrases = (adjective, noun) => {
     let randomAdjective = Math.floor(Math.random() * adjective.length);
     let randomNoun = Math.floor(Math.random() * noun.length);
-    setPhraseArr((phraseArr) => [
+    let randomPhrase = `${adjective[randomAdjective]} ${noun[randomNoun]}`;
+    setPhraseArr([
       ...phraseArr,
-      `${adjective[randomAdjective]} ${noun[randomNoun]}`,
+      randomPhrase
     ]);
   };
 
@@ -74,7 +75,7 @@ function App() {
       </div>
       <button
         className="btn btn_generate"
-        onClick={() => randomPhrase(adjectivesArr, nounsArr)}
+        onClick={() => randomPhrases(adjectivesArr, nounsArr)}
       >
         Сгенерировать
       </button>
