@@ -1,88 +1,34 @@
 import "./App.css";
-import React, { useState } from "react";
-import Phrase from "./components/Phrase";
-import EmptyBlock from "./components/EmptyBlock";
+import React from "react";
+import Feedback from "./components/Feedback";
+import ReviewBlock from "./components/ReviewBlock";
 
 function App() {
-  const adjectivesArr = [
-    "абсолютный",
-    "адский",
-    "азартный",
-    "активный",
-    "ангельский",
-    "астрономический",
-    "баснословный",
-    "безбожный",
-    "безбрежный",
-    "безвозвратный",
-    "безграничный",
-    "бездонный",
-    "бездушный",
-    "безжалостный",
-    "замечательно",
-    "замечательный",
-    "записной",
-    "запредельный",
-    "заядлый",
-    "звериный",
-    "зверский",
-    "зеленый",
-    "злой",
-    "злостный",
-    "значительный",
-    "неоспоримый",
-    "неотразимый",
-    "неоценимый",
-    "непередаваемый",
-  ];
-  const nounsArr = [
-    "лгун",
-    "день",
-    "конь",
-    "олень",
-    "человек",
-    "программист",
-    "ребёнок",
-    "конец",
-    "город",
-    "дурак",
-  ];
+  const [comments, setComments] = React.useState([]);
 
-  const [phraseArr, setPhraseArr] = useState([]);
+  React.useEffect(() => {
+    const localComments = JSON.parse(localStorage.getItem("comments")) || [];
+    setComments(localComments);
+  }, []);
 
-  const randomPhrases = (adjective, noun) => {
-    let randomAdjective = Math.floor(Math.random() * adjective.length);
-    let randomNoun = Math.floor(Math.random() * noun.length);
-    let randomPhrase = `${adjective[randomAdjective]} ${noun[randomNoun]}`;
-    setPhraseArr([
-      ...phraseArr,
-      randomPhrase
-    ]);
+  React.useEffect(() => {
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }, [comments]);
+
+  const addComment = (comment) => {
+    comment.createdAt = new Date();
+    setComments([...comments, comment]);
   };
-
-  const resetArray = () => {
-    setPhraseArr([]);
+  const handleRemoveComment = (index) => {
+    const res = comments.filter((_, i) => index !== i);
+    setComments(res);
   };
 
   return (
-    <div className="wrapper">
-      <div className="list">
-        {phraseArr.length === 0 ? (
-          <EmptyBlock />
-        ) : (
-          phraseArr.map((data, index) => <Phrase text={data} key={index} />)
-        )}
-      </div>
-      <button
-        className="btn btn_generate"
-        onClick={() => randomPhrases(adjectivesArr, nounsArr)}
-      >
-        Сгенерировать
-      </button>
-      <button className="btn btn_clear" onClick={resetArray}>
-        Очистить
-      </button>
-    </div>
+    <React.Fragment>
+      <ReviewBlock comments={comments} onDelete={handleRemoveComment} />
+      <Feedback onSubmit={addComment} />
+    </React.Fragment>
   );
 }
 
