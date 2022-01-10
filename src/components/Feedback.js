@@ -16,7 +16,7 @@ const styles = {
   },
 };
 
-const Feedback = () => {
+const Feedback = ({ onSubmit }) => {
   const [fields, setFields] = React.useState({
     fullName: "",
     email: "",
@@ -26,15 +26,14 @@ const Feedback = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setFields({fullName: "", email: "", createdAt: "", text: ""})
-    console.log(fields)
+    onSubmit(fields);
+    setFields({ fullName: "", email: "", createdAt: "", text: "" });
   };
   const handleChange = (e) => {
-    setFields((prevState => {
-      return {...prevState, [e.target.name]: e.target.value}
-    }));
-  }
-
+    setFields((prevState) => {
+      return { ...prevState, [e.target.name]: e.target.value };
+    });
+  };
 
   return (
     <div style={styles.wrapper}>

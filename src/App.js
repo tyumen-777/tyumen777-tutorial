@@ -1,19 +1,33 @@
 import "./App.css";
-import React, { useState } from "react";
+import React from "react";
 import Feedback from "./components/Feedback";
-import Review from "./components/Review";
+import ReviewBlock from "./components/ReviewBlock";
 
 function App() {
-  const [coments, setComents] = React.useState([]);
+  const [comments, setComments] = React.useState([]);
 
-  const addComment = () => {
+  React.useEffect(() => {
+    const localComments = JSON.parse(localStorage.getItem("comments")) || [];
+    setComments(localComments);
+  }, []);
 
-  }
+  React.useEffect(() => {
+    localStorage.setItem("comments", JSON.stringify(comments));
+  }, [comments]);
+
+  const addComment = (comment) => {
+    comment.createdAt = new Date();
+    setComments([...comments, comment]);
+  };
+  const handleRemoveComment = (index) => {
+    const res = comments.filter((_, i) => index !== i);
+    setComments(res);
+  };
 
   return (
     <React.Fragment>
-        <Review/>
-      <Feedback />
+      <ReviewBlock comments={comments} onDelete={handleRemoveComment} />
+      <Feedback onSubmit={addComment} />
     </React.Fragment>
   );
 }
